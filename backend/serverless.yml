@@ -15,6 +15,8 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-2'}
+  environment:
+    TODOS_TABLE: Todos-${self:provider.stage}
 
 functions:
 
@@ -79,7 +81,7 @@ resources:
           - AttributeName: todoId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: TODOS_TABLE
+        TableName: ${self:provider.environment.TODOS_TABLE}
         LocalSecondaryIndexes:
           - IndexName: LastCreated
             KeySchema:
@@ -105,5 +107,5 @@ custom:
     seed:
       test:
         sources:
-          - table: TODOS_TABLE
+          - table: ${self:provider.environment.TODOS_TABLE}
             sources: [./items.json]
