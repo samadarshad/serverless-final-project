@@ -12,7 +12,6 @@ import { getTodos } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    // TODO: Get all TODO items for a current user
     logger.info('Processing event', {
         event
     })
@@ -23,8 +22,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     return {
     statusCode: 200,
     body: JSON.stringify({
-        message: "getTodos endpoint",
-        todos
+        items: todos
     })
 }
 })
