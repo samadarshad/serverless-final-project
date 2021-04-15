@@ -61,9 +61,19 @@ functions:
 #           method: post
 #           path: todos/{todoId}/attachment
 
-# resources:
-#   Resources:
-#     # TODO: Add any necessary AWS resources
+resources:
+  Resources:
+    TodosDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: todoId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: todoId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: TODOS_TABLE
 
 custom:
   serverless-offline:
@@ -74,5 +84,11 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
+      seed: true
     stages:
       - dev
+    seed:
+      test:
+        sources:
+          - table: TODOS_TABLE
+            sources: [./items.json]
