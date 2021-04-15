@@ -5,7 +5,8 @@
         "name": "Buy milk",
         "dueDate": "2019-07-29T20:01:45.424Z",
         "done": false,
-        "attachmentUrl": "http://example.com/image.png"
+        "attachmentUrl": "http://example.com/image.png",
+        "userId": "1"
     },
     {
         "todoId": "456",
@@ -13,7 +14,26 @@
         "name": "Send a letter",
         "dueDate": "2019-07-29T20:01:45.424Z",
         "done": true,
-        "attachmentUrl": "http://example.com/image.png"
+        "attachmentUrl": "http://example.com/image.png",
+        "userId": "2"
+    },
+    {
+        "todoId": "789",
+        "createdAt": "2019-07-26T20:01:45.424Z",
+        "name": "Buy cat",
+        "dueDate": "2019-07-29T20:01:45.424Z",
+        "done": true,
+        "attachmentUrl": "http://example.com/image.png",
+        "userId": "1"
+    },
+    {
+        "todoId": "101",
+        "createdAt": "2019-07-28T20:01:45.424Z",
+        "name": "Buy cat",
+        "dueDate": "2019-07-29T20:01:45.424Z",
+        "done": true,
+        "attachmentUrl": "http://example.com/image.png",
+        "userId": "1"
     }
 ]
   
