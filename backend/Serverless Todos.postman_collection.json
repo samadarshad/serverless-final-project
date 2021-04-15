@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "b9cbff21-795c-481e-880f-36cae10a6fca",
+		"name": "Serverless Todos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Todo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Buy milkaaaaaaaaaaaaa\",\r\n  \"dueDate\": \"2019-07-29T20:01:45.424Z\",\r\n  \"attachmentUrl\": \"http://example.com/image.png\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/todos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Todo Invalid",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Buy milkaaaaaaaaaaaaa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/todos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/todos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:3003/dev"
+		},
+		{
+			"key": "jwt",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilpwd2QyY1BhcjVMSTFSMDd5b3VQQSJ9.eyJpc3MiOiJodHRwczovL3NhbWFkYXJzaGFkLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDc4Nzg2MDFjOTYyOTAwNmRhODY4MzkiLCJhdWQiOiJDQXV5c1FvRXV1eFdWNFVpNHpheUxIU2pXRkJWc0dVYiIsImlhdCI6MTYxODUwNzg5NiwiZXhwIjoxNjE4OTQzODk2LCJhdF9oYXNoIjoiUDhIR3FrYm1nUklDVFZKSG15VzdsdyIsIm5vbmNlIjoic1JuRVhJTWNSMlRYdUl1OXFCeH5hQWlvZ3NSNEphdnUifQ.kGSgnuPA6KLaCVXKBzbJmzJOoOvCGb99w2rN0nQCtY4eQboMhCqBEPgJAiIzav8GX4E79wsmOGeNOoR0PvI9hMk5gMfohK4ebrE5dP2YWDlG_8vozmVBHp0AaZCtDPBsf2XsLCvuZBYw4Eggqkl_gIQhdHQYwrjsXH6_kEsrcz07j3EF5JSAq-rTgwDeiGwOUxM5nzZbOjFimePO-lDMPBVapNxRkDJGdlKzZhddBIyg5sbX1JWMQukJ1xnHO_s_8y99HGvib7IPTYP5i11JZ00qoT_wXf7vMijFI4M_DDEXZQLmpPOfFs7QYOjOAGOEAAN1YKK-jk5pfKKUp65Jdw"
+		}
+	]
+}

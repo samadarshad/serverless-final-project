@@ -11,7 +11,7 @@ import { createLogger } from '../../utils/logger'
 import { createTodo } from '../../businessLogic/todos'
 const logger = createLogger('createTodo')
 
-export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   logger.info('Processing event', {
     event
   })
@@ -30,10 +30,9 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
         item: todo
     })
   }
-})
+}
 
-handler.use(
-  cors({
+export const handler = middy(createTodoHandler)
+.use(cors({
       credentials: true
-  })
-)
+  }))
