@@ -15,6 +15,16 @@ export class TodoAccess {
         logger.info('getTodos', {
             userId
         })
-        return undefined
+
+        const result = await this.docClient.query({
+            TableName: this.todosTable,
+            KeyConditionExpression: 'userId = :userId',
+            ExpressionAttributeValues: {
+                ':userId': userId
+            }
+        }).promise()
+
+        const items = result.Items
+        return items as TodoItem[]
     }
 }

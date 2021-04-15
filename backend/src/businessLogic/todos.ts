@@ -14,5 +14,7 @@ export async function getTodos(
         userId
     })
 
-    return undefined
+    const todos = await todoAccess.getTodos(userId)
+
+    return todos
 }
