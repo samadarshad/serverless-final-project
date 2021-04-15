@@ -17,6 +17,11 @@ provider:
   region: ${opt:region, 'eu-west-2'}
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
+    DISABLE_XRAY_TRACING: true # for local only
+    _X_AMZN_TRACE_ID: 0        # for local only
+  tracing:
+    lambda: true
+    apiGateway: true
 
 functions:
 
