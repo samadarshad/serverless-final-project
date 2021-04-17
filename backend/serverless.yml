@@ -28,6 +28,8 @@ functions:
 
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
+    environment:
+      JWKS_URL: https://samadarshad.eu.auth0.com/.well-known/jwks.json
 
   # TODO: Configure this function
   GetTodos:

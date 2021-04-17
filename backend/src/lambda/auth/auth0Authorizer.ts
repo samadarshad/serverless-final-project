@@ -10,7 +10,7 @@ const jwksClient = require('jwks-rsa');
 
 const logger = createLogger('auth')
 
-const jwksUrl = 'https://samadarshad.eu.auth0.com/.well-known/jwks.json'
+const jwksUrl = process.env.JWKS_URL
 
 const keyClient = jwksClient({
   jwksUri: jwksUrl
@@ -24,36 +24,10 @@ export const handler = async (
   try {
     const jwtToken = await verifyToken(event.authorizationToken)
     logger.info('User was authorized', jwtToken)
-
-    return {
-      principalId: jwtToken.sub,
-      policyDocument: {
-        Version: '2012-10-17',
-        Statement: [
-          {
-            Action: 'execute-api:Invoke',
-            Effect: 'Allow',
-            Resource: '*'
-          }
-        ]
-      }
-    }
+    return allowAllIamPolicyStatement(jwtToken.sub)  
   } catch (e) {
     logger.error('User not authorized', { error: e.message })
-
-    return {
-      principalId: 'user',
-      policyDocument: {
-        Version: '2012-10-17',
-        Statement: [
-          {
-            Action: 'execute-api:Invoke',
-            Effect: 'Deny',
-            Resource: '*'
-          }
-        ]
-      }
-    }
+    return denyAllIamPolicyStatement
   }
 }
 
@@ -77,4 +51,34 @@ function getToken(authHeader: string): string {
   const token = split[1]
 
   return token
+}
+
+const allowAllIamPolicyStatement = (userId) => {
+  return {
+      principalId: userId,
+      policyDocument: {
+          Version: '2012-10-17',
+          Statement: [
+              {
+                  Action: 'execute-api:Invoke',
+                  Effect: 'Allow',
+                  Resource: '*'
+              }
+          ]
+      }
+  }
+}
+
+const denyAllIamPolicyStatement = {
+  principalId: 'user',
+  policyDocument: {
+      Version: '2012-10-17',
+      Statement: [
+          {
+              Action: 'execute-api:Invoke',
+              Effect: 'Deny',
+              Resource: '*'
+          }
+      ]
+  }
 }
