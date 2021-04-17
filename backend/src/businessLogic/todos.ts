@@ -8,6 +8,7 @@ const todoAccess = new TodoAccess()
 
 import { createLogger } from '../utils/logger'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
+import { CustomErrors } from './errors'
 const logger = createLogger('todos')
 
 export async function getTodos(
@@ -20,6 +21,23 @@ export async function getTodos(
     const todos = await todoAccess.getTodos(userId)
 
     return todos
+}
+
+export async function getTodo(
+    todoId: string
+): Promise<TodoItem> {
+    logger.info('getTodo', {
+        todoId
+    })
+
+    const todo = await todoAccess.getTodo(todoId)
+
+    logger.info('todo', todo)
+    if (!todo) {
+        throw new Error(CustomErrors.NotFound)
+    }
+
+    return todo
 }
 
 export async function createTodo(
@@ -37,4 +55,12 @@ export async function createTodo(
     }
 
     return await todoAccess.createTodo(todo)
+}
+
+export async function deleteTodo(
+    todoId: string
+) {
+    const userId = (await getTodo(todoId)).userId
+    
+    return await todoAccess.deleteTodo(userId, todoId)
 }

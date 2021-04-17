@@ -28,6 +28,32 @@ export class TodoAccess {
         return items as TodoItem[]
     }
 
+    async getTodo(todoId: string): Promise<TodoItem|null> {
+        logger.info('getTodo', {
+            todoId
+        })
+
+        const result = await this.docClient.query({
+            TableName: this.todosTable,
+            IndexName: 'TodoIdIndex',
+            KeyConditionExpression: 'todoId = :todoId',
+            ExpressionAttributeValues: {
+                ':todoId': todoId
+            }
+        }).promise()
+
+        logger.info('result', {
+            result
+        })
+
+        if (result.Count !== 0) {
+            const item = result.Items[0]
+            return item as TodoItem
+        } else {
+            return null
+        }
+    }
+
     async createTodo(todo: TodoItem): Promise<TodoItem> {
         logger.info('createTodo', {
             todo
@@ -39,5 +65,19 @@ export class TodoAccess {
         }).promise()
 
         return todo
+    }
+
+    async deleteTodo(userId: string, todoId: string) {
+        logger.info('deleteTodo', {
+            todoId
+        })
+
+        return await this.docClient.delete({
+            TableName: this.todosTable,
+            Key: {
+                userId,
+                todoId
+            }
+        }).promise()
     }
 }

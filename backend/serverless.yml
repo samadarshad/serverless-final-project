@@ -66,13 +66,13 @@ functions:
 #           path: todos/{todoId}
 
 #   # TODO: Configure this function
-  # DeleteTodo:
-  #   handler: src/lambda/http/deleteTodo.handler
-  #   events:
-  #     - http:
-  #         method: delete
-  #         path: todos/{todoId}
-  #         authorizer: Auth
+  DeleteTodo:
+    handler: src/lambda/http/deleteTodo.handler
+    events:
+      - http:
+          method: delete
+          path: todos/{todoId}
+          authorizer: Auth
 
 #   # TODO: Configure this function
 #   GenerateUploadUrl:
@@ -108,6 +108,13 @@ resources:
                 KeyType: HASH
               - AttributeName: createdAt
                 KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        GlobalSecondaryIndexes:
+          - IndexName: TodoIdIndex
+            KeySchema:
+              - AttributeName: todoId
+                KeyType: HASH
             Projection:
               ProjectionType: ALL
 

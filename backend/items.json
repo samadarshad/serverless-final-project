@@ -6,7 +6,7 @@
         "dueDate": "2019-07-29T20:01:45.424Z",
         "done": false,
         "attachmentUrl": "http://example.com/image.png",
-        "userId": "1"
+        "userId": "auth0|607878601c9629006da86839"
     },
     {
         "todoId": "456",
@@ -24,7 +24,7 @@
         "dueDate": "2019-07-29T20:01:45.424Z",
         "done": true,
         "attachmentUrl": "http://example.com/image.png",
-        "userId": "1"
+        "userId": "auth0|607878601c9629006da86839"
     },
     {
         "todoId": "101",
@@ -33,7 +33,7 @@
         "dueDate": "2019-07-29T20:01:45.424Z",
         "done": true,
         "attachmentUrl": "http://example.com/image.png",
-        "userId": "1"
+        "userId": "auth0|607878601c9629006da86839"
     }
 ]
   
