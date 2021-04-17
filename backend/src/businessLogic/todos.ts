@@ -66,11 +66,11 @@ export async function deleteTodo(
     return await todoAccess.deleteTodo(todo)
 }
 
-// export async function updateTodo(
-//     todoId: string,
-//     updateTodoRequest: UpdateTodoRequest
-// ) {
-//     const todo
-    
-//     return await todoAccess.updateTodo()
-// }
+export async function updateTodo(
+    todoId: string,
+    updateTodoRequest: UpdateTodoRequest
+) {
+    const todo = await getTodo(todoId)
+
+    return await todoAccess.updateTodo(todo, updateTodoRequest)
+}

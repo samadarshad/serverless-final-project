@@ -6,6 +6,7 @@ const logger = createLogger('TodoAccess')
 import { createDynamoDBClient } from '../utils/dynamoDbClient'
 
 import { TodoItem } from '../models/TodoItem'
+import { TodoUpdate } from '../models/TodoUpdate'
 
 export class TodoAccess {
     constructor(
@@ -83,9 +84,10 @@ export class TodoAccess {
         }).promise()
     }
 
-    async updateTodo(todo: TodoItem) {
+    async updateTodo(todo: TodoItem, todoUpdate: TodoUpdate) {
         logger.info('updateTodo', {
-            todo
+            todo,
+            todoUpdate
         })
 
         return await this.docClient.update({
@@ -94,11 +96,14 @@ export class TodoAccess {
                userId: todo.userId,
                todoId: todo.todoId 
             },
-            UpdateExpression: "set name = :name, dueDate = :dueDate, done = :done",
+            ExpressionAttributeNames: {
+                '#todo_name': 'name'
+            },
+            UpdateExpression: "set #todo_name = :name, dueDate = :dueDate, done = :done",
             ExpressionAttributeValues: {
-                ":name": todo.name,
-                ":dueDate": todo.dueDate,
-                ":done": todo.done
+                ":name": todoUpdate.name,
+                ":dueDate": todoUpdate.dueDate,
+                ":done": todoUpdate.done
             }
         }).promise()
     }
