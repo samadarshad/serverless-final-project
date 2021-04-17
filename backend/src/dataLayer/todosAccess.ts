@@ -1,9 +1,11 @@
-import { createDynamoDBClient } from '../utils/dynamoDbClient'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { TodoItem } from '../models/TodoItem'
 
 import { createLogger } from '../utils/logger'
 const logger = createLogger('TodoAccess')
+
+import { createDynamoDBClient } from '../utils/dynamoDbClient'
+
+import { TodoItem } from '../models/TodoItem'
 
 export class TodoAccess {
     constructor(
@@ -67,16 +69,36 @@ export class TodoAccess {
         return todo
     }
 
-    async deleteTodo(userId: string, todoId: string) {
+    async deleteTodo(todo: TodoItem) {
         logger.info('deleteTodo', {
-            todoId
+            todo
         })
 
         return await this.docClient.delete({
             TableName: this.todosTable,
             Key: {
-                userId,
-                todoId
+                userId: todo.userId,
+                todoId: todo.todoId
+            }
+        }).promise()
+    }
+
+    async updateTodo(todo: TodoItem) {
+        logger.info('updateTodo', {
+            todo
+        })
+
+        return await this.docClient.update({
+            TableName: this.todosTable,
+            Key: {
+               userId: todo.userId,
+               todoId: todo.todoId 
+            },
+            UpdateExpression: "set name = :name, dueDate = :dueDate, done = :done",
+            ExpressionAttributeValues: {
+                ":name": todo.name,
+                ":dueDate": todo.dueDate,
+                ":done": todo.done
             }
         }).promise()
     }

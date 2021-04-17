@@ -24,7 +24,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     body: JSON.stringify({
         items: todos
     })
-}
+    }
 })
 
 handler.use(

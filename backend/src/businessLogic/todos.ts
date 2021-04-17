@@ -9,6 +9,7 @@ const todoAccess = new TodoAccess()
 import { createLogger } from '../utils/logger'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { CustomErrors } from './errors'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const logger = createLogger('todos')
 
 export async function getTodos(
@@ -60,7 +61,16 @@ export async function createTodo(
 export async function deleteTodo(
     todoId: string
 ) {
-    const userId = (await getTodo(todoId)).userId
+    const todo = await getTodo(todoId)
     
-    return await todoAccess.deleteTodo(userId, todoId)
+    return await todoAccess.deleteTodo(todo)
 }
+
+// export async function updateTodo(
+//     todoId: string,
+//     updateTodoRequest: UpdateTodoRequest
+// ) {
+//     const todo
+    
+//     return await todoAccess.updateTodo()
+// }

@@ -17,11 +17,11 @@ import * as createError from 'http-errors'
 
 const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
+  logger.info('Deleting todo', { todoId })
 
   let todo: TodoItem
   try {
     todo = await getTodo(todoId)
-    logger.info('Found todo', todo)
   } catch (error) {
     if (error.message = CustomErrors.NotFound) {
       throw new createError.NotFound()
