@@ -84,10 +84,9 @@ export class TodoAccess {
         }).promise()
     }
 
-    async updateTodo(todo: TodoItem, todoUpdate: TodoUpdate) {
+    async updateTodo(todo: TodoItem) {
         logger.info('updateTodo', {
-            todo,
-            todoUpdate
+            todo
         })
 
         return await this.docClient.update({
@@ -101,9 +100,9 @@ export class TodoAccess {
             },
             UpdateExpression: "set #todo_name = :name, dueDate = :dueDate, done = :done",
             ExpressionAttributeValues: {
-                ":name": todoUpdate.name,
-                ":dueDate": todoUpdate.dueDate,
-                ":done": todoUpdate.done
+                ":name": todo.name,
+                ":dueDate": todo.dueDate,
+                ":done": todo.done
             }
         }).promise()
     }

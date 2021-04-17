@@ -70,7 +70,11 @@ export async function updateTodo(
     todoId: string,
     updateTodoRequest: UpdateTodoRequest
 ) {
-    const todo = await getTodo(todoId)
+    let todo = await getTodo(todoId)
+    todo = {
+        ...todo,
+        ...updateTodoRequest
+    }
 
-    return await todoAccess.updateTodo(todo, updateTodoRequest)
+    return await todoAccess.updateTodo(todo)
 }
