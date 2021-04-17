@@ -12,7 +12,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-2'}
@@ -31,7 +31,6 @@ functions:
     environment:
       JWKS_URL: https://samadarshad.eu.auth0.com/.well-known/jwks.json
 
-  # TODO: Configure this function
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
@@ -42,16 +41,21 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:query
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
-#   # TODO: Configure this function
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
       - http:
           method: post
           path: todos
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 #   # TODO: Configure this function
 #   UpdateTodo:
@@ -62,12 +66,13 @@ functions:
 #           path: todos/{todoId}
 
 #   # TODO: Configure this function
-#   DeleteTodo:
-#     handler: src/lambda/http/deleteTodo.handler
-#     events:
-#       - http:
-#           method: delete
-#           path: todos/{todoId}
+  # DeleteTodo:
+  #   handler: src/lambda/http/deleteTodo.handler
+  #   events:
+  #     - http:
+  #         method: delete
+  #         path: todos/{todoId}
+  #         authorizer: Auth
 
 #   # TODO: Configure this function
 #   GenerateUploadUrl:

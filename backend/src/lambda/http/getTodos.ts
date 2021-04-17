@@ -5,8 +5,8 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } f
 import { createLogger } from '../../utils/logger'
 const logger = createLogger('getTodos')
 
-import * as middy from 'middy'
-import { cors } from 'middy/middlewares'
+import middy from '@middy/core'
+import cors from '@middy/http-cors'
 
 import { getTodos } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
