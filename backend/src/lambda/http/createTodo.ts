@@ -9,6 +9,7 @@ import { cors } from 'middy/middlewares'
 
 import { createLogger } from '../../utils/logger'
 import { createTodo } from '../../businessLogic/todos'
+import { getUserId } from '../utils'
 const logger = createLogger('createTodo')
 
 const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -21,8 +22,8 @@ const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
     newTodo
   })
 
-  // const userId = getUserId(event)
-  const todo = await createTodo(newTodo, "1")
+  const userId = getUserId(event)
+  const todo = await createTodo(newTodo, userId)
 
   return {
     statusCode: 201,
