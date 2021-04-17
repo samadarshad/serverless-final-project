@@ -1,3 +1,4 @@
 export const CustomErrors = {
-    NotFound: 'Item not found'
+    NotFound: 'Item not found',
+    Unauthorized: 'Unauthorized'
 }

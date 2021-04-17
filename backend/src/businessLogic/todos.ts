@@ -12,6 +12,11 @@ import { CustomErrors } from './errors'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const logger = createLogger('todos')
 
+export async function isUserAuthenticatedToModifyItem(userId: string, todoId: string): Promise<boolean> {
+    const todo = await getTodo(todoId)
+    return (userId === todo.userId)
+}
+
 export async function getTodos(
     userId: string
 ): Promise<TodoItem[]> {
@@ -58,9 +63,14 @@ export async function createTodo(
     return await todoAccess.createTodo(todo)
 }
 
-export async function deleteTodo(
+export async function deleteTodo(userId: string,
     todoId: string
 ) {
+
+    if (! await isUserAuthenticatedToModifyItem(userId, todoId)) {
+        throw new Error(CustomErrors.Unauthorized)
+    }
+
     const todo = await getTodo(todoId)
     
     return await todoAccess.deleteTodo(todo)
