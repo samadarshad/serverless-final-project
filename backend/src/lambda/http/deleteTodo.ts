@@ -9,7 +9,7 @@ import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 
 import { deleteTodo,  } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
-import { CustomErrors } from '../../businessLogic/errors'
+import { errorToHttp } from '../../businessLogic/errors'
 
 const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
@@ -19,23 +19,7 @@ const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
   try {
     await deleteTodo(userId, todoId)
   } catch (error) {
-    switch(error.message) {
-      case CustomErrors.NotFound: 
-        return {
-          statusCode: StatusCodes.NOT_FOUND,
-          body: ReasonPhrases.NOT_FOUND
-        }
-      case CustomErrors.Unauthorized:
-        return {
-          statusCode: StatusCodes.UNAUTHORIZED,
-          body: ReasonPhrases.UNAUTHORIZED
-        }
-      default:
-        return {
-          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          body: error.message
-        }      
-    }
+    return errorToHttp(error)
   }
 
   return {

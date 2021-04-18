@@ -8,7 +8,7 @@ const todoAccess = new TodoAccess()
 
 import { createLogger } from '../utils/logger'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
-import { CustomErrors } from './errors'
+import { DomainErrors } from './errors'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const logger = createLogger('todos')
 
@@ -40,7 +40,7 @@ export async function getTodo(
 
     logger.info('todo', todo)
     if (!todo) {
-        throw new Error(CustomErrors.NotFound)
+        throw new Error(DomainErrors.NotFound)
     }
 
     return todo
@@ -68,7 +68,7 @@ export async function deleteTodo(userId: string,
 ) {
 
     if (! await isUserAuthenticatedToModifyItem(userId, todoId)) {
-        throw new Error(CustomErrors.Unauthorized)
+        throw new Error(DomainErrors.Unauthorized)
     }
 
     const todo = await getTodo(todoId)

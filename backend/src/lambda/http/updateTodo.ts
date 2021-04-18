@@ -11,7 +11,7 @@ import httpErrorHandler from '@middy/http-error-handler'
 
 import { getTodo, updateTodo } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
-import { CustomErrors } from '../../businessLogic/errors'
+import { DomainErrors } from '../../businessLogic/errors'
 import { TodoItem } from '../../models/TodoItem'
 import * as createError from 'http-errors' 
 
@@ -26,7 +26,7 @@ const updateTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
   try {
     todo = await getTodo(todoId)
   } catch (error) {
-    if (error.message = CustomErrors.NotFound) {
+    if (error.message = DomainErrors.NotFound) {
       throw new createError.NotFound()
     } else {
       throw createError(500, error, { expose: true })
