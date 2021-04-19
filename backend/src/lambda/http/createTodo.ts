@@ -11,6 +11,7 @@ import { createLogger } from '../../utils/logger'
 import { createTodo } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
 import { errorToHttp } from '../../businessLogic/errors'
+import { StatusCodes } from 'http-status-codes'
 const logger = createLogger('createTodo')
 
 const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -21,7 +22,7 @@ const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
   try {
     const todo = await createTodo(newTodo, userId)  
     return {
-      statusCode: 201,
+      statusCode: StatusCodes.CREATED,
       body: JSON.stringify({
           item: todo
       })

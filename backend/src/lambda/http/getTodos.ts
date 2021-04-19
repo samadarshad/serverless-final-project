@@ -10,6 +10,7 @@ import cors from '@middy/http-cors'
 import { getTodos } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
 import { errorToHttp } from '../../businessLogic/errors'
+import { StatusCodes } from 'http-status-codes'
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId = getUserId(event)
@@ -18,7 +19,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     try {        
         const todos = await getTodos(userId)    
         return {
-        statusCode: 200,
+        statusCode: StatusCodes.OK,
         body: JSON.stringify({
             items: todos
         })

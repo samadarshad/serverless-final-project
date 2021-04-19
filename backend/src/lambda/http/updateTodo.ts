@@ -13,6 +13,7 @@ import { getUserId } from '../utils'
 import { errorToHttp } from '../../businessLogic/errors'
 
 import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
+import { StatusCodes } from 'http-status-codes'
 
 const updateTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
@@ -23,7 +24,7 @@ const updateTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
   try {
     await updateTodo(userId, todoId, updatedTodo)
     return {
-      statusCode: 204,
+      statusCode: StatusCodes.NO_CONTENT,
       body: ''
     }
   } catch (error) {
