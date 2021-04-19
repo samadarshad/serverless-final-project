@@ -88,3 +88,16 @@ export async function updateTodo(
 
     return await todoAccess.updateTodo(todo)
 }
+
+export async function updateTodoWithAttachmentUrl(
+    todoId: string,
+    attachmentUrl: string
+) {
+    let todo = await getTodo(todoId)
+    todo = {
+        ...todo,
+        attachmentUrl
+    }
+
+    return await todoAccess.updateTodo(todo)
+}
