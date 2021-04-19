@@ -5,7 +5,7 @@ import { createS3Client } from '../../utils/s3Client'
 
 const s3 = createS3Client()
 
-const bucketName = process.env.IMAGES_BUCKET
+const bucketName = process.env.ATTACHMENTS_BUCKET
 const urlExpiration = parseInt(process.env.SIGNED_URL_EXPIRATION)
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

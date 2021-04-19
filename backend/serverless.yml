@@ -20,7 +20,7 @@ provider:
     TODOS_TABLE: Todos-${self:provider.stage}
     DISABLE_XRAY_TRACING: true # for local only
     _X_AMZN_TRACE_ID: 0        # for local only
-    IMAGES_BUCKET: Todos-${self:provider.environment.accountId}-images-${self:provider.stage}
+    ATTACHMENTS_BUCKET: Todos-${self:provider.environment.accountId}-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
   tracing:
     lambda: true
@@ -85,6 +85,14 @@ functions:
           method: post
           path: todos/{todoId}/attachment
 
+  UpdateTodoWithAttachments:
+    handler: src/lambda/s3/updateTodoWithAttachment.handler
+    events:
+      - s3:
+          bucket: ${self:provider.environment.ATTACHMENTS_BUCKET}
+          event: s3:ObjectCreated:Put
+          existing: true
+
 resources:
   Resources:
     TodosTable:
@@ -120,10 +128,10 @@ resources:
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
-    ImagesBucket:
+    AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.IMAGES_BUCKET}
+        BucketName: ${self:provider.environment.ATTACHMENTS_BUCKET}
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
