@@ -61,7 +61,7 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
-#   # TODO: Configure this function
+
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
@@ -69,6 +69,12 @@ functions:
           method: patch
           path: todos/{todoId}
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -88,13 +94,17 @@ functions:
           - s3:DeleteObject
         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_BUCKET}/*
 
-#   # TODO: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
           path: todos/{todoId}/attachment
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_BUCKET}/*
 
   UpdateTodoWithAttachments:
     handler: src/lambda/s3/updateTodoWithAttachment.handler
@@ -103,6 +113,11 @@ functions:
           bucket: ${self:provider.environment.ATTACHMENTS_BUCKET}
           event: s3:ObjectCreated:Put
           existing: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
