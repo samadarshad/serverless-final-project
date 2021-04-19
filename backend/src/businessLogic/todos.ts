@@ -6,6 +6,9 @@ import { parseUserId } from '../auth/utils'
 
 const todoAccess = new TodoAccess()
 
+import { AttachmentsAccess } from '../dataLayer/attachmentsAccess'
+const attachmentsAccess = new AttachmentsAccess()
+
 import { createLogger } from '../utils/logger'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { DomainErrors } from './errors'
@@ -72,6 +75,7 @@ export async function deleteTodo(userId: string,
     }
 
     const todo = await getTodo(todoId)
+    await attachmentsAccess.deleteAttachment(todoId)
     
     return await todoAccess.deleteTodo(todo)
 }
@@ -89,10 +93,10 @@ export async function updateTodo(
     return await todoAccess.updateTodo(todo)
 }
 
-export async function updateTodoWithAttachmentUrl(
-    todoId: string,
-    attachmentUrl: string
+export async function updateTodoWithAttachment(
+    todoId: string
 ) {
+    const attachmentUrl = attachmentsAccess.getReadUrl(todoId)
     let todo = await getTodo(todoId)
     todo = {
         ...todo,

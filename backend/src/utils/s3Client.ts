@@ -3,7 +3,15 @@ import * as AWSXRay from 'aws-xray-sdk'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-const localEndpoint = 'http://localhost:4569'
+const localEndpoint = `http://${process.env.LOCAL_S3_HOST}:${process.env.LOCAL_S3_PORT}`
+const bucket = process.env.ATTACHMENTS_BUCKET
+
+export function getS3Endpoint() {
+    if (process.env.IS_OFFLINE) {
+        return `${localEndpoint}/${bucket}`
+    }
+    return `https://${bucket}.s3.amazonaws.com`
+}
 
 export function createS3Client() {
     if (process.env.IS_OFFLINE) {
@@ -20,9 +28,3 @@ export function createS3Client() {
     })
 }
 
-export function getUrl(bucket, key){
-    if (process.env.IS_OFFLINE) {
-        return `${localEndpoint}/${bucket}/${key}`
-    }
-    return `https://${bucket}.s3.amazonaws.com/${key}`
-};

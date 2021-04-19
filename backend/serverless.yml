@@ -22,6 +22,8 @@ provider:
     _X_AMZN_TRACE_ID: 0        # for local only
     ATTACHMENTS_BUCKET: Todos-${self:provider.environment.accountId}-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    LOCAL_S3_HOST: localhost
+    LOCAL_S3_PORT: 4569
   tracing:
     lambda: true
     apiGateway: true
@@ -165,7 +167,7 @@ custom:
             sources: [./items.json]
   
   s3:
-    host: localhost
-    port: 4569
+    host: ${self:provider.environment.LOCAL_S3_HOST}
+    port: ${self:provider.environment.LOCAL_S3_PORT}
     directory: /tmp
     allowMismatchedSignatures: true
