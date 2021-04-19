@@ -55,6 +55,9 @@ functions:
           method: post
           path: todos
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/create-todo-request.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -69,6 +72,9 @@ functions:
           method: patch
           path: todos/{todoId}
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-todo-request.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:

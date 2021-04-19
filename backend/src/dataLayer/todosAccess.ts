@@ -103,7 +103,7 @@ export class TodoAccess {
                 ":name": todo.name,
                 ":dueDate": todo.dueDate,
                 ":done": todo.done,
-                ":attachmentUrl": todo.attachmentUrl
+                ":attachmentUrl": todo.attachmentUrl ? todo.attachmentUrl : ''
             }
         }).promise()
     }
