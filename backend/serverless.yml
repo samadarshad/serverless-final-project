@@ -8,8 +8,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
-  - serverless-iam-roles-per-function
-
+  - serverless-s3-local
 provider:
   name: aws
   runtime: nodejs14.x
@@ -17,9 +16,12 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-2'}
   environment:
+    accountId: 324941539183
     TODOS_TABLE: Todos-${self:provider.stage}
     DISABLE_XRAY_TRACING: true # for local only
     _X_AMZN_TRACE_ID: 0        # for local only
+    IMAGES_BUCKET: Todos-${self:provider.environment.accountId}-images-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
   tracing:
     lambda: true
     apiGateway: true
@@ -76,12 +78,12 @@ functions:
           authorizer: Auth
 
 #   # TODO: Configure this function
-#   GenerateUploadUrl:
-#     handler: src/lambda/http/generateUploadUrl.handler
-#     events:
-#       - http:
-#           method: post
-#           path: todos/{todoId}/attachment
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: todos/{todoId}/attachment
 
 resources:
   Resources:
@@ -118,6 +120,23 @@ resources:
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
+    ImagesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.IMAGES_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - HEAD
+              MaxAge: 3000
 
 custom:
   serverless-offline:
@@ -136,3 +155,9 @@ custom:
         sources:
           - table: ${self:provider.environment.TODOS_TABLE}
             sources: [./items.json]
+  
+  s3:
+    host: localhost
+    port: 4569
+    directory: /tmp
+    allowMismatchedSignatures: true
