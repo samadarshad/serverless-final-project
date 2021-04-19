@@ -5,7 +5,7 @@ import { createLogger } from '../../utils/logger'
 const logger = createLogger('deleteTodo')
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
-import { StatusCodes, ReasonPhrases } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 
 import { deleteTodo,  } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
@@ -18,15 +18,13 @@ const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
 
   try {
     await deleteTodo(userId, todoId)
+    return {
+      statusCode: StatusCodes.NO_CONTENT,
+      body: ''
+    }
   } catch (error) {
     return errorToHttp(error)
   }
-
-  return {
-    statusCode: StatusCodes.NO_CONTENT,
-    body: ''
-  }
-
 }
 
 export const handler = middy(deleteTodoHandler)

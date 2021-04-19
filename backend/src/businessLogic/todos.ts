@@ -80,10 +80,14 @@ export async function deleteTodo(userId: string,
     return await todoAccess.deleteTodo(todo)
 }
 
-export async function updateTodo(
+export async function updateTodo(userId: string,
     todoId: string,
     updateTodoRequest: UpdateTodoRequest
 ) {
+    if (! await isUserAuthenticatedToModifyItem(userId, todoId)) {
+        throw new Error(DomainErrors.Unauthorized)
+    }
+
     let todo = await getTodo(todoId)
     todo = {
         ...todo,
