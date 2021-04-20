@@ -42,6 +42,7 @@ functions:
           method: get
           path: todos
           authorizer: Auth
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -55,6 +56,7 @@ functions:
           method: post
           path: todos
           authorizer: Auth
+          cors: true
           request:
             schema:
               application/json: ${file(models/create-todo-request.json)}
@@ -72,6 +74,7 @@ functions:
           method: patch
           path: todos/{todoId}
           authorizer: Auth
+          cors: true
           request:
             schema:
               application/json: ${file(models/update-todo-request.json)}
@@ -89,6 +92,7 @@ functions:
           method: delete
           path: todos/{todoId}
           authorizer: Auth
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -106,6 +110,7 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -125,7 +130,7 @@ functions:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
-resources:
+resources:  
   Resources:
     TodosTable:
       Type: AWS::DynamoDB::Table
@@ -177,6 +182,17 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+            gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+            gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+            gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'    
+      
 
 custom:
   serverless-offline:
