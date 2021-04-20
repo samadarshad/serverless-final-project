@@ -78,8 +78,6 @@ Comment in serverless.yml
 
 Endpoint is given in console. 
 
-Note: pushing to the `main` branch triggers serverless.app to build and deploy to AWS.
-
 ### Improvements
 - Can optimise lambda function size. Deployment will take longer.
 - Bucket is publically readable. Could generate a signed read URL.
