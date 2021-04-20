@@ -12,7 +12,7 @@ import { getUserId } from '../utils'
 import { errorToHttp } from '../../businessLogic/errors'
 import { StatusCodes } from 'http-status-codes'
 
-export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+const getTodosHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId = getUserId(event)
     logger.info('Getting all todos', { userId })
 
@@ -29,10 +29,9 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     }
 
 
-})
+}
 
-handler.use(
-    cors({
-        credentials: true
-    })
-)
+export const handler = middy(getTodosHandler)
+.use(cors({
+      credentials: true
+  }))

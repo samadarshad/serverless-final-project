@@ -12,6 +12,9 @@ Prerequesites:
 
 - AWS CLI with credentials/IAM role
 - `npm i -g serverless`
+- In AWS, Set up a new user in IAM named "serverless" and save the access key and secret key.
+- `sls config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY --profile serverless`
+
 - `npm ci`
 
 2.1 `sls dynamodb start --seed=test`
@@ -20,4 +23,4 @@ Prerequesites:
 
 3. Deploying to AWS
 
-3.1 `sls deploy -v`
+3.1 `sls deploy -v` or `sls deploy -v --aws-profile serverless`
