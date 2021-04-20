@@ -2,12 +2,12 @@ import { CustomAuthorizerResult, CustomAuthorizerEvent } from 'aws-lambda'
 import 'source-map-support/register'
 
 import { verify, decode } from 'jsonwebtoken'
-import { createLogger } from '../../utils/logger'
+const jwksClient = require('jwks-rsa');
+
 import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
 
-const jwksClient = require('jwks-rsa');
-
+import { createLogger } from '../../utils/logger'
 const logger = createLogger('auth')
 
 const jwksUrl = process.env.JWKS_URL
