@@ -1,13 +1,12 @@
-import { CustomAuthorizerResult, CustomAuthorizerEvent } from 'aws-lambda'
-import 'source-map-support/register'
+import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda';
+import { decode, verify } from 'jsonwebtoken';
+import 'source-map-support/register';
+import { Jwt } from '../../auth/Jwt';
+import { JwtPayload } from '../../auth/JwtPayload';
+import { createLogger } from '../../utils/logger';
 
-import { verify, decode } from 'jsonwebtoken'
 const jwksClient = require('jwks-rsa');
 
-import { Jwt } from '../../auth/Jwt'
-import { JwtPayload } from '../../auth/JwtPayload'
-
-import { createLogger } from '../../utils/logger'
 const logger = createLogger('auth')
 
 const jwksUrl = process.env.JWKS_URL
@@ -20,11 +19,11 @@ export const handler = async (
   event: CustomAuthorizerEvent
 ): Promise<CustomAuthorizerResult> => {
   logger.info('Authorizing a user', { authorizationToken: event.authorizationToken })
-  
+
   try {
     const jwtToken = await verifyToken(event.authorizationToken)
     logger.info('User was authorized', jwtToken)
-    return allowAllIamPolicyStatement(jwtToken.sub)  
+    return allowAllIamPolicyStatement(jwtToken.sub)
   } catch (e) {
     logger.error('User not authorized', { error: e.message })
     return denyAllIamPolicyStatement
@@ -55,30 +54,30 @@ function getToken(authHeader: string): string {
 
 const allowAllIamPolicyStatement = (userId) => {
   return {
-      principalId: userId,
-      policyDocument: {
-          Version: '2012-10-17',
-          Statement: [
-              {
-                  Action: 'execute-api:Invoke',
-                  Effect: 'Allow',
-                  Resource: '*'
-              }
-          ]
-      }
+    principalId: userId,
+    policyDocument: {
+      Version: '2012-10-17',
+      Statement: [
+        {
+          Action: 'execute-api:Invoke',
+          Effect: 'Allow',
+          Resource: '*'
+        }
+      ]
+    }
   }
 }
 
 const denyAllIamPolicyStatement = {
   principalId: 'user',
   policyDocument: {
-      Version: '2012-10-17',
-      Statement: [
-          {
-              Action: 'execute-api:Invoke',
-              Effect: 'Deny',
-              Resource: '*'
-          }
-      ]
+    Version: '2012-10-17',
+    Statement: [
+      {
+        Action: 'execute-api:Invoke',
+        Effect: 'Deny',
+        Resource: '*'
+      }
+    ]
   }
 }

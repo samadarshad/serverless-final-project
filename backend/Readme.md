@@ -49,6 +49,12 @@ typescript-json-schema "src/requests/CreateTodoRequest.ts" CreateTodoRequest --o
 typescript-json-schema "src/requests/UpdateTodoRequest.ts" UpdateTodoRequest --out models/update-todo-request.json --required --noExtraProps
 ```
 
+0.2 Uncomment in serverless.yml 
+```
+    DISABLE_XRAY_TRACING: true # for local only
+    _X_AMZN_TRACE_ID: 0        # for local only
+```
+
 1. `npm i`
 
 2. `sls dynamodb start --seed=test`
@@ -60,8 +66,16 @@ Dynamodb can be viewed at localhost:8000/shell
 
 ### Deploying Backend to AWS
 
+Comment in serverless.yml 
+```
+    #DISABLE_XRAY_TRACING: true # for local only
+    #_X_AMZN_TRACE_ID: 0        # for local only
+```
+
 `npm i`
 
 `sls deploy -v` or `sls deploy -v --aws-profile serverless`
 
 Endpoint is given in console. 
+
+Note: pushing to the `main` branch triggers serverless.app to build and deploy to AWS.

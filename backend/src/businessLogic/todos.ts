@@ -1,20 +1,15 @@
 import * as uuid from 'uuid'
-
-import { TodoItem } from '../models/TodoItem'
+import { AttachmentsAccess } from '../dataLayer/attachmentsAccess'
 import { TodoAccess } from '../dataLayer/todosAccess'
+import { TodoItem } from '../models/TodoItem'
+import { CreateTodoRequest } from '../requests/CreateTodoRequest'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { createLogger } from '../utils/logger'
+import { DomainErrors } from './errors'
 
 const todoAccess = new TodoAccess()
-
-import { AttachmentsAccess } from '../dataLayer/attachmentsAccess'
 const attachmentsAccess = new AttachmentsAccess()
-
-import { createLogger } from '../utils/logger'
-import { CreateTodoRequest } from '../requests/CreateTodoRequest'
-import { DomainErrors } from './errors'
-import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const logger = createLogger('todos')
-
-
 
 export async function isUserAuthenticatedToModifyItem(userId: string, todoId: string): Promise<boolean> {
     const todo = await getTodo(todoId)
@@ -77,7 +72,7 @@ export async function deleteTodo(userId: string,
 
     const todo = await getTodo(todoId)
     await attachmentsAccess.deleteAttachment(todoId)
-    
+
     return await todoAccess.deleteTodo(todo)
 }
 

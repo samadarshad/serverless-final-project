@@ -1,19 +1,16 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-
-import { createLogger } from '../utils/logger'
-const logger = createLogger('TodoAccess')
-
-import { createDynamoDBClient } from '../utils/dynamoDbClient'
-
 import { TodoItem } from '../models/TodoItem'
-import { TodoUpdate } from '../models/TodoUpdate'
+import { createDynamoDBClient } from '../utils/dynamoDbClient'
+import { createLogger } from '../utils/logger'
+
+const logger = createLogger('TodoAccess')
 
 export class TodoAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDBClient(),
         private readonly todosTable = process.env.TODOS_TABLE,
         private readonly todoIdIndex = process.env.TODO_INDEX
-    ) {}
+    ) { }
 
     async getTodos(userId: string): Promise<TodoItem[]> {
         logger.info('getTodos', {
@@ -32,7 +29,7 @@ export class TodoAccess {
         return items as TodoItem[]
     }
 
-    async getTodo(todoId: string): Promise<TodoItem|null> {
+    async getTodo(todoId: string): Promise<TodoItem | null> {
         logger.info('getTodo', {
             todoId
         })
@@ -94,8 +91,8 @@ export class TodoAccess {
         return await this.docClient.update({
             TableName: this.todosTable,
             Key: {
-               userId: todo.userId,
-               todoId: todo.todoId 
+                userId: todo.userId,
+                todoId: todo.todoId
             },
             ExpressionAttributeNames: {
                 '#todo_name': 'name'

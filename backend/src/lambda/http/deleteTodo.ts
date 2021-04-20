@@ -1,15 +1,14 @@
-import 'source-map-support/register'
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-
-import { createLogger } from '../../utils/logger'
-const logger = createLogger('deleteTodo')
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { StatusCodes } from 'http-status-codes'
-
-import { deleteTodo,  } from '../../businessLogic/todos'
-import { getUserId } from '../utils'
+import 'source-map-support/register'
 import { errorToHttp } from '../../businessLogic/errors'
+import { deleteTodo } from '../../businessLogic/todos'
+import { createLogger } from '../../utils/logger'
+import { getUserId } from '../utils'
+
+const logger = createLogger('deleteTodo')
 
 const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
@@ -28,6 +27,6 @@ const deleteTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
 }
 
 export const handler = middy(deleteTodoHandler)
-.use(cors({
-      credentials: true
+  .use(cors({
+    credentials: true
   }))

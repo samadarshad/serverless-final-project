@@ -1,17 +1,14 @@
-import 'source-map-support/register'
-
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
-
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
-
-import { createLogger } from '../../utils/logger'
-import { createTodo } from '../../businessLogic/todos'
-import { getUserId } from '../utils'
-import { errorToHttp } from '../../businessLogic/errors'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { StatusCodes } from 'http-status-codes'
+import 'source-map-support/register'
+import { errorToHttp } from '../../businessLogic/errors'
+import { createTodo } from '../../businessLogic/todos'
+import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
+import { createLogger } from '../../utils/logger'
+import { getUserId } from '../utils'
+
 const logger = createLogger('createTodo')
 
 const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -20,11 +17,11 @@ const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
   logger.info('Creating todo', { newTodo, userId })
 
   try {
-    const todo = await createTodo(newTodo, userId)  
+    const todo = await createTodo(newTodo, userId)
     return {
       statusCode: StatusCodes.CREATED,
       body: JSON.stringify({
-          item: todo
+        item: todo
       })
     }
   } catch (error) {
@@ -33,6 +30,6 @@ const createTodoHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
 }
 
 export const handler = middy(createTodoHandler)
-.use(cors({
-      credentials: true
+  .use(cors({
+    credentials: true
   }))

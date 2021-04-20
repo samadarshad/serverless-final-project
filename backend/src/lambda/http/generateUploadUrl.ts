@@ -1,14 +1,14 @@
-import 'source-map-support/register'
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-
-import { createLogger } from '../../utils/logger'
-const logger = createLogger('generateUploadUrl')
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
-
-import { AttachmentsAccess } from '../../dataLayer/attachmentsAccess'
-import { errorToHttp } from '../../businessLogic/errors'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { StatusCodes } from 'http-status-codes'
+import 'source-map-support/register'
+import { errorToHttp } from '../../businessLogic/errors'
+import { AttachmentsAccess } from '../../dataLayer/attachmentsAccess'
+import { createLogger } from '../../utils/logger'
+
+const logger = createLogger('generateUploadUrl')
+
 const attachmentsAccess = new AttachmentsAccess()
 
 const generateUploadUrlHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -20,7 +20,7 @@ const generateUploadUrlHandler = async (event: APIGatewayProxyEvent): Promise<AP
     return {
       statusCode: StatusCodes.CREATED,
       body: JSON.stringify({
-          uploadUrl
+        uploadUrl
       })
     }
   } catch (error) {
@@ -29,8 +29,8 @@ const generateUploadUrlHandler = async (event: APIGatewayProxyEvent): Promise<AP
 }
 
 export const handler = middy(generateUploadUrlHandler)
-.use(cors({
-      credentials: true
+  .use(cors({
+    credentials: true
   }))
 
 
