@@ -1,4 +1,47 @@
-1. Generate Json Schemas by running this:
+# Serverless Project
+
+Endpoint URL: https://vrcrzzx032.execute-api.eu-west-2.amazonaws.com/dev
+
+Frontend URL: https://serverless-project-samadarshad.netlify.app/
+
+View the frontend to interact with the application.
+
+## Development
+Prerequisites
+- Node v14
+- Java JDK/JRE (for running dynamodb locally):
+
+```
+sudo apt update
+
+sudo apt install default-jre
+
+sudo apt install default-jdk
+
+npm install serverless-dynamodb-local@0.2.30 --save-dev
+
+npm install serverless-offline --save-dev
+
+sls dynamodb install
+```
+
+- AWS Account, with an IAM role for profile `serverless` with `AdministratorAccess` policy attached
+- `npm i -g serverless`
+- `sls config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY --profile serverless`
+
+### How to run the frontend locally
+Change /client/src/config.ts to use the local endpoint and url.
+Then start the server:
+``` 
+cd client
+npm run start
+```
+Go to localhost:3000
+
+### How to run the backend locally
+
+0. If not done already, generate apiGateway validation Json Schemas by running this:
+`npm i -g typescript-json-schema`
 
 ```
 typescript-json-schema "src/requests/CreateTodoRequest.ts" CreateTodoRequest --out models/create-todo-request.json --required --noExtraProps
@@ -6,21 +49,19 @@ typescript-json-schema "src/requests/CreateTodoRequest.ts" CreateTodoRequest --o
 typescript-json-schema "src/requests/UpdateTodoRequest.ts" UpdateTodoRequest --out models/update-todo-request.json --required --noExtraProps
 ```
 
-2. Local Development:
+1. `npm i`
 
-Prerequesites:
+2. `sls dynamodb start --seed=test`
 
-- AWS CLI with credentials/IAM role
-- `npm i -g serverless`
-- In AWS, Set up a new user in IAM named "serverless" and save the access key and secret key.
-- `sls config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY --profile serverless`
+3. `sls offline`
 
-- `npm ci`
+Endpoint is localhost:3003
+Dynamodb can be viewed at localhost:8000/shell
 
-2.1 `sls dynamodb start --seed=test`
+### Deploying Backend to AWS
 
-2.2 `sls offline`
+`npm i`
 
-3. Deploying to AWS
+`sls deploy -v` or `sls deploy -v --aws-profile serverless`
 
-3.1 `sls deploy -v` or `sls deploy -v --aws-profile serverless`
+Endpoint is given in console. 
