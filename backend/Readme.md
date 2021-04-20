@@ -79,3 +79,8 @@ Comment in serverless.yml
 Endpoint is given in console. 
 
 Note: pushing to the `main` branch triggers serverless.app to build and deploy to AWS.
+
+### Improvements
+- Can optimise lambda function size. Deployment will take longer.
+- Bucket is publically readable. Could generate a signed read URL.
+- Updating Dynamodb with optional attachmentUrl results in messy data - either -empty- or "" (empty string). This could be standardised.
