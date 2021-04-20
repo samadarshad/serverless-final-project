@@ -89,6 +89,7 @@ export class TodoAccess {
             todo
         })
 
+        // TODO The below code is too hard-coded - what is a way to do database updates in a less hardcoded way and with optional nullable attributes? 
         return await this.docClient.update({
             TableName: this.todosTable,
             Key: {
@@ -103,7 +104,7 @@ export class TodoAccess {
                 ":name": todo.name,
                 ":dueDate": todo.dueDate,
                 ":done": todo.done,
-                ":attachmentUrl": todo.attachmentUrl ? todo.attachmentUrl : ''
+                ":attachmentUrl": (todo.attachmentUrl || '')
             }
         }).promise()
     }

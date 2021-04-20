@@ -2,7 +2,6 @@ import * as uuid from 'uuid'
 
 import { TodoItem } from '../models/TodoItem'
 import { TodoAccess } from '../dataLayer/todosAccess'
-import { parseUserId } from '../auth/utils'
 
 const todoAccess = new TodoAccess()
 
@@ -14,6 +13,8 @@ import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { DomainErrors } from './errors'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const logger = createLogger('todos')
+
+
 
 export async function isUserAuthenticatedToModifyItem(userId: string, todoId: string): Promise<boolean> {
     const todo = await getTodo(todoId)
