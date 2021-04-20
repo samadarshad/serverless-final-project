@@ -1,4 +1,4 @@
-import { APIGatewayAuthorizerEvent, APIGatewayAuthorizerResult } from 'aws-lambda'
+import { CustomAuthorizerResult, CustomAuthorizerEvent } from 'aws-lambda'
 import 'source-map-support/register'
 
 import { verify, decode } from 'jsonwebtoken'
@@ -17,8 +17,8 @@ const keyClient = jwksClient({
 })
 
 export const handler = async (
-  event: APIGatewayAuthorizerEvent
-): Promise<APIGatewayAuthorizerResult> => {
+  event: CustomAuthorizerEvent
+): Promise<CustomAuthorizerResult> => {
   logger.info('Authorizing a user', { authorizationToken: event.authorizationToken })
   
   try {
